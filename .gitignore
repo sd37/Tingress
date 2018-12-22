@@ -1,3 +1,4 @@
 .vs/
 node_modules/
-Tingress/package-lock.json
+package-lock.json
+credentials.json
