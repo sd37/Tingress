@@ -60,14 +60,14 @@ async function likeAndPushToDb (client) {
 }
 
 async function sleepyLike (client, id) {
-  let secondsToSleep = 5
+  let secondsToSleep = 1
   sleep(secondsToSleep * 1000)
   let likeOutput = await client.like(id)
   console.log(likeOutput)
 }
 
 async function sleepyGetRecommendations (client) {
-  let secondsToSleep = 2
+  let secondsToSleep = 0.5
   sleep(secondsToSleep * 1000)
   let recosResponses = await client.getRecommendations()
   return recosResponses
