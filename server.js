@@ -2,6 +2,23 @@
 
 import { TinderClient } from 'tinder-client'
 let fs = require('fs')
+const Sequelize = require('sequelize')
+
+const sequelize = new Sequelize('tinderdb', 'postgres', 'besmart', {
+  dialect: 'postgres',
+  host: 'localhost',
+  port: '5432',
+  operatorsAliases: false
+})
+
+const Users = sequelize.define('users', {
+  user_id: Sequelize.STRING,
+  name: Sequelize.STRING,
+  bio: Sequelize.STRING,
+  distance_mi: Sequelize.INTEGER,
+  ping_time: Sequelize.TIME,
+  birth_date: Sequelize.TIME
+})
 
 async function getClient (facebookUserId, facebookToken) {
   let client = null
@@ -25,19 +42,29 @@ function getCredentials () {
   return jsonContent
 }
 
+async function likeAndPushToDb (client) {
+  let recosResponses = await client.getRecommendations()
+  let recos = recosResponses.results
+
+  recos.forEach(async r => {
+    Users.create({
+      user_id: r._id,
+      name: r.name,
+      bio: r.bio,
+      distance_mi: r.distance_mi,
+      ping_time: r.ping_time,
+      birth_date: r.birth_date })
+    let likeOutput = await client.like(r._id)
+    console.log(likeOutput)
+  })
+}
+
 async function main () {
   let cred = getCredentials()
   let client = await getClient(cred.userId, cred.token)
-  let profileMetaData = await client.getMetadata()
-  console.log(profileMetaData)
-  // console.log(profile)
-  // let recommendations = await client.getRecommendations()
 
   try {
-    let userId = '5a82567982e3b3df16844775'
-    let likeOutput = null
-    // let likeOutput = await client.like(userId)
-    console.log(likeOutput)
+    await likeAndPushToDb(client)
   } catch (error) {
     console.log(error)
   }
@@ -47,3 +74,5 @@ async function main () {
 console.log('starting server')
 
 main()
+
+console.log('server closed..')
