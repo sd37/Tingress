@@ -9,7 +9,8 @@
             "request": "launch",
             "name": "Tingress",
             "program": "${workspaceFolder}/start.js",
-            "protocol": "inspector"
+            "protocol": "inspector",
+            "smartStep": true
         }
     ]
 }
