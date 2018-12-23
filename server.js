@@ -77,6 +77,11 @@ async function main () {
   let cred = getCredentials()
   let client = await getClient(cred.userId, cred.token)
 
+  console.log('***Profile Info***')
+  let profile = await client.getProfile()
+  console.log(profile)
+  console.log('Profile Info EOF***')
+
   let iterations = 1
   try {
     for (let i = 1; i <= iterations; i++) {
