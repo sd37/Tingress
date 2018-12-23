@@ -28,8 +28,19 @@ function getCredentials () {
 async function main () {
   let cred = getCredentials()
   let client = await getClient(cred.userId, cred.token)
-  let profile = await client.getProfile()
-  console.log(profile)
+  let profileMetaData = await client.getMetadata()
+  console.log(profileMetaData)
+  // console.log(profile)
+  // let recommendations = await client.getRecommendations()
+
+  try {
+    let userId = '5a82567982e3b3df16844775'
+    let likeOutput = null
+    // let likeOutput = await client.like(userId)
+    console.log(likeOutput)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 // the server starts here..
