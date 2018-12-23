@@ -2,6 +2,7 @@
 
 import { TinderClient } from 'tinder-client'
 let fs = require('fs')
+const sleep = require('system-sleep')
 const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize('tinderdb', 'postgres', 'besmart', {
@@ -43,10 +44,11 @@ function getCredentials () {
 }
 
 async function likeAndPushToDb (client) {
-  let recosResponses = await client.getRecommendations()
+  let recosResponses = await sleepyGetRecommendations(client)
   let recos = recosResponses.results
 
   recos.forEach(async r => {
+    await sleepyLike(client, r._id)
     Users.create({
       user_id: r._id,
       name: r.name,
@@ -54,17 +56,32 @@ async function likeAndPushToDb (client) {
       distance_mi: r.distance_mi,
       ping_time: r.ping_time,
       birth_date: r.birth_date })
-    let likeOutput = await client.like(r._id)
-    console.log(likeOutput)
   })
+}
+
+async function sleepyLike (client, id) {
+  let secondsToSleep = 10
+  sleep(secondsToSleep * 1000)
+  await client.like(id)
+}
+
+async function sleepyGetRecommendations (client) {
+  let secondsToSleep = 5
+  sleep(secondsToSleep * 1000)
+  let recosResponses = await client.getRecommendations()
+  return recosResponses
 }
 
 async function main () {
   let cred = getCredentials()
   let client = await getClient(cred.userId, cred.token)
 
+  let iterations = 10
   try {
-    await likeAndPushToDb(client)
+    for (let i = 1; i <= iterations; i++) {
+      console.log('Iteration: ' + i)
+      await likeAndPushToDb(client)
+    }
   } catch (error) {
     console.log(error)
   }
