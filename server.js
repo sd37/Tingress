@@ -60,14 +60,14 @@ async function likeAndPushToDb (client) {
 }
 
 async function sleepyLike (client, id) {
-  let secondsToSleep = 10
+  let secondsToSleep = 5
   sleep(secondsToSleep * 1000)
   let likeOutput = await client.like(id)
   console.log(likeOutput)
 }
 
 async function sleepyGetRecommendations (client) {
-  let secondsToSleep = 5
+  let secondsToSleep = 2
   sleep(secondsToSleep * 1000)
   let recosResponses = await client.getRecommendations()
   return recosResponses
@@ -82,7 +82,7 @@ async function main () {
   console.log(profile)
   console.log('Profile Info EOF***')
 
-  let iterations = 1
+  let iterations = 100
   try {
     for (let i = 1; i <= iterations; i++) {
       console.log('Iteration: ' + i)
