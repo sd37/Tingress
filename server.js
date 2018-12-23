@@ -60,7 +60,7 @@ async function likeAndPushToDb (client) {
 }
 
 async function sleepyLike (client, id) {
-  let secondsToSleep = 0.5
+  let secondsToSleep = 0.20
   sleep(secondsToSleep * 1000)
   let likeOutput = await client.like(id)
   console.log(likeOutput)
