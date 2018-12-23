@@ -1,16 +1,26 @@
 'use strict'
-import { TinderClient } from 'tinder-client'
 
-async function doStuff (id, token) {
-  // var client = await TinderClient.create({ facebookUserId, facebookToken })
-  console.log(id)
-  console.log(token)
-  let client = await Promise.resolve(1)
+import { TinderClient } from 'tinder-client'
+let fs = require('fs')
+
+async function getClient (id, token) {
+  let client = await TinderClient.create({ id, token })
   return client
 }
 
-const facebookUserId = 'someFacebookUserId'
-const facebookToken = 'someFacebookToken'
+function getCredentials () {
+  let content = fs.readFileSync('./credentials.json')
+  let jsonContent = JSON.parse(content)
 
-let x = doStuff(facebookUserId, facebookToken)
-console.log('printing value of x:' + x)
+  return jsonContent
+}
+
+async function main () {
+  let cred = getCredentials()
+  let client = await getClient(cred.userId, cred.token)
+}
+
+// the server starts here..
+console.log('starting server')
+
+main()

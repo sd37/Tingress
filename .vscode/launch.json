@@ -8,7 +8,8 @@
             "type": "node",
             "request": "launch",
             "name": "Tingress",
-            "program": "${workspaceFolder}/start.js"
+            "program": "${workspaceFolder}/start.js",
+            "protocol": "inspector"
         }
     ]
 }
