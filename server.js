@@ -62,7 +62,8 @@ async function likeAndPushToDb (client) {
 async function sleepyLike (client, id) {
   let secondsToSleep = 10
   sleep(secondsToSleep * 1000)
-  await client.like(id)
+  let likeOutput = await client.like(id)
+  console.log(likeOutput)
 }
 
 async function sleepyGetRecommendations (client) {
@@ -76,7 +77,7 @@ async function main () {
   let cred = getCredentials()
   let client = await getClient(cred.userId, cred.token)
 
-  let iterations = 10
+  let iterations = 1
   try {
     for (let i = 1; i <= iterations; i++) {
       console.log('Iteration: ' + i)
@@ -89,7 +90,4 @@ async function main () {
 
 // the server starts here..
 console.log('starting server')
-
 main()
-
-console.log('server closed..')
