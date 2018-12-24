@@ -80,7 +80,7 @@ async function main () {
   console.log(profile)
   console.log('Profile Info EOF***')
 
-  let iterations = 100
+  let iterations = 1000
   try {
     for (let i = 1; i <= iterations; i++) {
       console.log('Iteration: ' + i)
